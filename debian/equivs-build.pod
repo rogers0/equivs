@@ -4,7 +4,7 @@ equivs-build - make a debian package to register local software
 
 =head1 SYNOPSIS
 
-B<equivs-build [--full|-f] controlfile>
+B<equivs-build [--full|-f] [--arch=foo|-a=foo] controlfile>
 
 =head1 DESCRIPTION
 
@@ -49,14 +49,20 @@ name and the dependency information used.
 The copyright file to by used. If ommited, the GPL 2 
 will be used.
 
+=item Preinst: Postinst: Prerm: Postrm:
+
+Maintainerscripts executed before/after installation/removal 
+of the package. See the Debian developers reference for a 
+description (package developers-reference).
+
 =item Extra-Files:
 
 A comma-seperated list of files to copy to the 
-/usr/doc/packagename directory.
+/usr/share/doc/packagename directory.
 
 =back
 
-See /usr/doc/equivs/README.Debian for more information.
+See /usr/share/doc/equivs/README.Debian for more information.
 
 =head1 OPTIONS
 
@@ -68,9 +74,15 @@ Do a complete build. debuild will be called, that is a
 full package will be build and signed, suitable for a upload 
 to the Debian servers. 
 
-The ID used to signed is taken from, in that order, the User from 
+The ID used to signed is taken from, in that order, the user from 
 the last entry of a supplied changelog, the Maintainer: field in the 
 equivs control file, the local username.
+
+=item --arch | -a
+
+Build package for architecture the specified architecture. Used
+e.g. for building packages for hurd under linux. equivs-build uses
+dpkg-architecture to provide this facility.
 
 =back
 
@@ -84,4 +96,4 @@ Martin Bialasinski <martinb@debian.org>
 
 =head1 SEE ALSO
 
-equivs-control(1), /usr/doc/equivs/README.Debian
+equivs-control(1), /usr/share/doc/equivs/README.Debian

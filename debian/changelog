@@ -1,3 +1,40 @@
+equivs (2.0.4) unstable; urgency=low
+
+  * Added Preinst, Postinst, Prerm and Postrm entries to the control file
+    for usage with maintainerscripts. Closes: #101198
+
+ -- Martin Bialasinski <martinb@debian.org>  Fri, 29 Jun 2001 22:04:01 +0200
+
+equivs (2.0.3) unstable; urgency=low
+
+  * provide a --arch switch for "cross-compiling" using dpkg-architecture
+    closes: #87791
+
+ -- Martin Bialasinski <martinb@debian.org>  Tue, 13 Mar 2001 22:32:44 +0100
+
+equivs (2.0.2) unstable; urgency=low
+
+  * Add build-depends. Closes: #70284
+
+ -- Martin Bialasinski <martinb@debian.org>  Thu, 21 Dec 2000 14:35:39 +0100
+
+equivs (2.0.1) unstable; urgency=low
+
+  * Make equivs-control print usage information, on any option.
+    closes: #78799
+
+ -- Martin Bialasinski <martinb@debian.org>  Wed,  6 Dec 2000 23:49:14 +0100
+
+equivs (2.0) unstable; urgency=low
+
+  * No more TODO, remove file
+  * Make full FHS complient (change docs etc.)
+  * Move files from /usr/lib/equivs to /usr/share/equivs
+  * Fix documentation, closes: #66771
+  * Call it version 2.0
+
+ -- Martin Bialasinski <martinb@debian.org>  Fri,  7 Jul 2000 17:57:57 +0200
+
 equivs (1.999.12) unstable; urgency=low
 
   * Fixed some perl -w warnings

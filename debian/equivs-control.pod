@@ -1,15 +1,15 @@
 =head1 NAME
 
-make-control - create a configuration file for make-equivs
+equivs-control - create a configuration file for equivs-build
 
 =head1 SYNOPSIS
 
-B<make-control filename>
+B<equivs-control filename>
 
 =head1 DESCRIPTION
 
 This programm copies a template control file as needed by 
-the make-equivs command as the specified filename.
+the equivs-control command as the specified filename.
 
 You then have to edit the created file to reflect your choices.
 The controlfile has the form used by regular controlfiles
@@ -20,7 +20,7 @@ in the generated file.
 
 =over 4
 
-=item F</usr/lib/equivs/template.ctl>
+=item F</usr/share/equivs/template.ctl>
 
 This is the template file that gets copied to the given filename.
 

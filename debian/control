@@ -1,8 +1,9 @@
 Source: equivs
 Section: admin
-Priority: optional
+Priority: extra
 Maintainer: Martin Bialasinski <martinb@debian.org>
-Standards-Version: 3.0.1
+Standards-Version: 3.1.0
+Build-Depends: debhelper
 
 Package: equivs
 Depends: perl|perl5, debhelper, dpkg-dev, devscripts, make, fakeroot

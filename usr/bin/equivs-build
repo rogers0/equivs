@@ -14,16 +14,22 @@ use File::Basename;
 
 sub usage{
   print <<EOU;
-Usage: equivs [--full|-f] controlfile
+Usage: equivs-build [--full|-f] [--arch=foo|-a=foo] controlfile
 controlfile is the name of an equivs controlfile.
 You can use "equivs-control filename" to create one.
+
+--full : full build incl. signing etc. suitable for 
+         upload to Debian
+--arch : Build package for architecture foo. Used e.g. for building 
+         packages for hurd under linux.
 EOU
   exit 1;
 }
 
 my $full_package;
-                       
-my $result = GetOptions("full" => \$full_package);          
+my $arch;                       
+my $result = GetOptions("full" => \$full_package,
+			"arch=s" => \$arch);          
 usage() if (!$result);
 
 my $debug=0;
@@ -60,7 +66,7 @@ mkdir $builddir, 0755 or die "Can not create build directory $builddir: $!";
 
 # Copy the default files
 
-my $ret = system("cp -R /usr/lib/equivs/template/* $builddir");
+my $ret = system("cp -R /usr/share/equivs/template/* $builddir");
 
 if ( 0xffff & $ret != 0 ) {
   die "Error on copy of the template files: $!";
@@ -94,6 +100,14 @@ foreach my $file (@extra_files){
   print DOCS "docs/$destination\n";
 }
 close DOCS;
+
+foreach my $script (("Preinst","Postinst","Prerm","Postrm")) {
+    next unless defined $control{$script};
+    my $destination = lc($script);
+    copy $control{$script}, "$builddir/debian/$destination" or
+	die "Cannot copy $script to $builddir/debian/$destination\n";
+}
+
 
 # Write the control file
 
@@ -148,14 +162,18 @@ if ($control{"Copyright"}) {
 unlink "$builddir/debian/README.Debian.in";
 unlink "$builddir/debian/control.in";
 
+# Set architecture for crosscompiling, if requested
+
+my $arch_cmd = $arch ? "dpkg-architecture -a$arch -c " : "";
+
 # Create the package
 
 chdir $builddir;
 
 if ($full_package){
-  $ret = system("debuild -rfakeroot");
+  $ret = system("$arch_cmd debuild -rfakeroot");
 } else {
-  $ret = system("fakeroot debian/rules binary");
+  $ret = system("$arch_cmd fakeroot debian/rules binary");
 }
 
 if ( 0xffff & $ret != 0 ) {

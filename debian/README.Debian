@@ -42,7 +42,7 @@ subdirectory "equivs", containing the files necessary to create
 a Debian package and build that package.
 
 You need a control file for make-equivs. You will find examples
-of control files in /usr/doc/equivs/examples.
+of control files in /usr/share/doc/equivs/examples.
 
 The control file has a structure like the control files in "real"
 Debian packages, but it doesn't have to define all keys, as default 
@@ -65,13 +65,13 @@ There are four additional fields that can be used:
              will be used.
 
 - Extra-Files: A comma-seperated list of files to copy to the
-               /usr/doc/packagename directory.
+               /usr/share/doc/packagename directory.
 
 
 Check the Debian Packaging Manual Chapter 8, if you are unsure 
 about the different level of package relationsships (dependencies)
-http://www.debian.org/doc/packaging-manuals/packaging.html/ch-relationships.html 
-, also available in the packaging-manual package.
+http://www.debian.org/doc/packaging-manuals/packaging.html/ch-relationships.html, 
+also available in the packaging-manual package.
 
 You can create full packages, suitable for a upload 
 to the Debian servers. To do this, use the option 
@@ -91,7 +91,7 @@ a. cd /tmp
 
 b.1. equivs-control ns-control
 or
-b.2. cp /usr/doc/equivs/examples/<a control file> ns-control
+b.2. cp /usr/share/doc/equivs/examples/<a control file> ns-control
 
 c. edit ns-control
 
@@ -102,6 +102,6 @@ e. su -
 f. dpkg -i /tmp/ns-dummy_1.0_all.deb
 
 Deinstallation of this package is only possible when all pending
-dependency issues are properly resolved in some other way.
+dependencies are properly resolved in some other way.
 
-Martin Bialasinski <martinb@debian.org>,  Mon,  4 Jan 1999 12:35:16 +0100
+Martin Bialasinski <martinb@debian.org>,  Fri,  7 Jul 2000 17:56:32 +0200
