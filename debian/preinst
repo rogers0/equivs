@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -f /usr/doc/equivs/current.conf ]; then
-  if [ ! -f /etc/equivs.conf ]; then
-    mv /usr/doc/equivs/current.conf /etc/equivs.conf
-  fi
-fi

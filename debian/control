@@ -1,24 +1,26 @@
 Source: equivs
 Section: admin
 Priority: optional
-Maintainer: Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>
-Standards-Version: 2.4.0.0
+Maintainer: Martin Bialasinski <martinb@debian.org>
+Standards-Version: 3.0.1
 
 Package: equivs
+Depends: perl|perl5, debhelper, dpkg-dev, devscripts, make, fakeroot
 Architecture: all
-Provides:
 Description: Circumventing Debian package dependencies
- This is a dummy package that makes Debian's package management
+ This is a dummy package which can be used to create Debian
+ packages, which only contain dependency information.
+ .
+ This way, you can make the Debian package management
  system believe that equivalents to packages on which other
  packages do depend on are actually installed.
  .
- Deinstallation of this package is only possible when all pending
- dependency issues are properly resolved in some other way. A more
- brutal approach for it's deinstallation is to create and install
- 'equivs' configured using an empty "/etc/equivs.conf" (or simply
- delete it) to remove all of the existing dependencies with any
- installed package on the system.
- .
+ Another possibility is creation of a meta package. When this 
+ package contains a dependency as "Depends: a, b, c", then 
+ installing this package will also select packages a, b and c.
+ Instead of "Depends", you can also use "Recommends:" or 
+ "Suggests:" for less demanding dependency.
+ . 
  Please note that this is a crude hack and if thoughtlessly used
  might possibly do damage to your packaging system. And please
  note as well that using it is not the recommended way of dealing

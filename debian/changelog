@@ -1,3 +1,107 @@
+equivs (1.999.12) unstable; urgency=low
+
+  * Fixed some perl -w warnings
+
+ -- Martin Bialasinski <martinb@debian.org>  Sun, 31 Oct 1999 02:48:59 +0100
+
+equivs (1.999.11) unstable; urgency=low
+
+  * Standards Version 3.0.1 also in the equivs-control template
+
+ -- Martin Bialasinski <martinb@debian.org>  Thu, 23 Sep 1999 22:11:20 +0200
+
+equivs (1.999.10) unstable; urgency=low
+
+  * Made FHS complient.
+  * Changed license location in copyright file 
+  * Standard 3.0.1 in the template
+
+ -- Martin Bialasinski <martinb@debian.org>  Thu, 16 Sep 1999 17:28:39 +0200
+
+equivs (1.999.9) unstable; urgency=low
+
+  * Depende on perl|perl5, so that the package can still be used with slink
+
+ -- Martin Bialasinski <martinb@debian.org>  Thu, 29 Jul 1999 23:42:19 +0200
+
+equivs (1.999.8) unstable; urgency=low
+
+  * Added dependency on perl (lintian)
+  * corrected spelling (lintian)
+
+ -- Martin Bialasinski <martinb@debian.org>  Wed,  7 Jul 1999 03:47:20 +0200
+
+equivs (1.999.7) unstable; urgency=low
+
+  * Added a Extra-Files: field to the control file where one can add
+    files to be put into /usr/doc/packagename
+  * Added the --full option, that makes a full build using debuild,
+    suitable for upload to the distribution
+
+ -- Martin Bialasinski <martinb@debian.org>  Thu, 24 Jun 1999 21:37:57 +0200
+
+equivs (1.999.6) unstable; urgency=low
+
+  * Added the Readme, Copyright and Changelog fields, so one can 
+    use own files 
+  * Renamed make-control to equivs-control and
+            make-equivs to equivs-build
+    Makes it easier for tab completition. I had to look up the 
+    names after some time not working on equivs, so the scripts were
+    obviously named wrong.
+  * Added version header in template control file (Closes #39959)
+  * Added manpages (Closes #38148)
+
+ -- Martin Bialasinski <martinb@debian.org>  Tue, 22 Jun 1999 23:11:10 +0200
+
+equivs (1.999.5) unstable; urgency=low
+
+  * Fixed typos in the examples. Closing #36354
+    Thanks to "Carl R. Witty" <cwitty@newtonlabs.com>
+
+ -- Martin Bialasinski <martinb@debian.org>  Tue, 20 Apr 1999 18:23:16 +0200
+
+equivs (1.999.4) unstable; urgency=low
+
+  * Examples for Staroffice and Word Perfect were foobar
+
+ -- Martin Bialasinski <martinb@debian.org>  Sun, 18 Apr 1999 15:24:35 +0200
+
+equivs (1.999.3) unstable; urgency=low
+
+  * Make the config parse routine chop trailing whitespace 
+  * Removed call of dh_link from template rules file, as it is not necessary.
+    Fixes #31670
+  * Fixed spelling error in description
+  * Added a small check, if the equivs directory is not a symlink 
+    before removing it
+  * Changed Depends: fakeroot to Depends: libtricks | fakeroot, until a new 
+    version of libtricks is released, which provides fakeroot (#31682)
+  * Added an example config for a locally installed MTA
+  
+ -- Martin Bialasinski <martinb@debian.org>  Wed,  6 Jan 1999 21:13:37 +0100
+
+equivs (1.999.2) unstable; urgency=low
+
+  * Forgot about the "Provides:" dependency
+  * Added a umask call, as somehow the README.Debian file was not copied
+    correctly
+  * Fixes wishlist bug #27215
+
+ -- Martin Bialasinski <martinb@debian.org>  Wed,  6 Jan 1999 13:24:59 +0100
+
+equivs (1.999.1) unstable; urgency=low
+
+  * New Maintainer
+  * Complete rewrite. Instead recreating the equivs package, one now
+    creates new fake packages
+  * No problem with apt anymore. To apt, the information fetched from 
+    it's sources has precedence over information hold localy by dpkg.
+    So a recompiled equivs packages was not recognised correctly.
+  * Changed versionnumber to a debian-only one.
+
+ -- Martin Bialasinski <martinb@debian.org>  Mon,  4 Jan 1999 12:35:16 +0100
+
 equivs (1.0.5-3) unstable; urgency=low
 
   * Upgraded to standards version 2.4.0.0 (no changes).

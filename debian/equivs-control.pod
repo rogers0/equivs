@@ -1,0 +1,40 @@
+=head1 NAME
+
+make-control - create a configuration file for make-equivs
+
+=head1 SYNOPSIS
+
+B<make-control filename>
+
+=head1 DESCRIPTION
+
+This programm copies a template control file as needed by 
+the make-equivs command as the specified filename.
+
+You then have to edit the created file to reflect your choices.
+The controlfile has the form used by regular controlfiles
+in source packages. You can delete the unneeded fields
+in the generated file.
+
+=head1 FILES
+
+=over 4
+
+=item F</usr/lib/equivs/template.ctl>
+
+This is the template file that gets copied to the given filename.
+
+=back
+
+=head1 DISTRIBUTION
+
+Distribution is subject to the GNU public licence version 2.
+
+=head1 AUTHOR
+
+Martin Bialasinski <martinb@debian.org>
+
+=head1 SEE ALSO
+
+equivs-build(1)
+

@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
 # Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
-# This version is for packages that are architecture independent.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -8,17 +7,6 @@
 build: build-stamp
 build-stamp:
 	dh_testdir
-
-	# Add here commands to compile the package.
-
-	pod2man --section=1 --release="`date +'%d %b %Y'`"\
-	--center="Debian/GNU" --date=' '\
-	debian/equivs-control.pod > debian/equivs-control.1 
-
-	pod2man --section=1 --release="`date +'%d %b %Y'`"\
-	--center="Debian/GNU" --date=' '\
-	debian/equivs-build.pod > debian/equivs-build.1 
-
 	touch build-stamp
 
 clean:
@@ -28,7 +16,6 @@ clean:
 
 	# Add here commands to clean up after the build process.
 
-	-rm -f debian/equivs-build.1 debian/equivs-control.1
 	dh_clean
 
 install: install-stamp
@@ -36,24 +23,21 @@ install-stamp: build-stamp
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs
 
 	# Add here commands to install the package into debian/tmp.
-	cp -R usr debian/tmp
 
 	touch install-stamp
 
 # Build architecture-independent files here.
 binary-indep: build install
-#	dh_testversion
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples
-	dh_installmanpages
-#	dh_undocumented
 	dh_installchangelogs
-	dh_link
 	dh_compress
 	dh_fixperms
 	dh_installdeb
@@ -61,12 +45,8 @@ binary-indep: build install
 	dh_md5sums
 	dh_builddeb
 
-# Build architecture-dependent files here.
-binary-arch: build install
-# We have nothing to do by default.
-
-source diff:
+source diff:                                                                  
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary
+.PHONY: build clean binary-indep binary-arch binary install

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]
+then 
+  echo Usage: $0 filename
+  echo filename is the name of the equivs control file to create
+  exit 1
+fi
+
+cp /usr/lib/equivs/template.ctl $1
+
