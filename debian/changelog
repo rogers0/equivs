@@ -1,3 +1,78 @@
+equivs (2.0.7) unstable; urgency=low
+
+  * New maintainer.  (Closes: #350835)
+  * Acknowledge NMU.  (Closes: #201852, #218443, #237963, #251547)
+  * Add file COPYING, the GNU GPL v2, to top level of source tree.
+  * Update both build-time and runtime use of debhelper to v4.
+    (Closes: #320619)
+  * debian/copyright, debian/rules: cleanups
+  * debian/control:
+    - standards version 3.6.2 (no changes needed)
+    - rewrite description
+    - drop 'perl5' alternative dependency; the perl5 package disappeared
+      about 3 release cycles ago
+  * template/debian/copyright: update FSF address.
+  * template/debian/control.in: edit description, set maintainer to
+    root@localhost, update standards version, add correct debhelper
+    Build-Depends
+  * template/debian/rules: streamline somewhat.
+  * equivs-build: support Replaces: field.  (Closes: #118526)
+  * equivs-build, template/debian/README.Debian.in:
+    use "@" instead of the ISO-8859-1 section symbol for the variable
+    escapes, to make life slightly easier for users of other charsets.
+    - equivs-build.pod: update (and fix) the documentation for this
+  * equivs-build: allow comments in control file.
+    - template.ctl: comment out most of the entries, to save the user some
+      time in common cases.  Also mention that packages lists are all
+      comma-separated.
+  * equivs-build: Lots of code cleanups.  Highlights:
+    - Use File::Temp::tempdir.  This removes the dir upon normal exit.  On
+      abend, tell the user where it is so she can examine and remove it.
+    - Print usage message to STDERR, not STDOUT
+    - Actually bother to close all the files we open
+    - die with "\n".  I doubt users care about source code line numbers.
+    - 3-arg open(), multi-arg system(), and in general try to look less
+      like Perl 4
+    - Delete outdated or useless comments, commented-out code, unneeded
+      variables, and redundant integrity checks
+    - Eliminate most use of global variables
+    The net effect is to shrink the file by about 20%.
+
+ -- Peter Samuelson <peter@p12n.org>  Tue, 28 Feb 2006 02:01:16 -0600
+
+equivs (2.0.6-0.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  
+  * equivs-build: fix operator precedence problem.  Applied patch from
+  Mattia Dongili.  Closes: #237963, 218443.
+  
+  * debian/control: Tweaked the description message, removing the
+  misleading phrase "dummy package".  Closes: #201852.
+
+ -- Steve M. Robbins <smr@debian.org>  Fri, 28 May 2004 21:38:59 -0400
+
+equivs (2.0.6) unstable; urgency=low
+
+  * Just to correct some changelog issues
+  * Wrong bug closed in 2.0.5 (#131270). The bug was #131260
+    (manually closed by me)
+  * era eriksson correct mail is era@iki.fi
+  * Fixed Control file to Standars-Version 3.5.10
+
+ -- Fabio Rafael da Rosa <f2r@users.sourceforge.net>  Wed, 11 Jun 2003 11:32:56 -0300
+
+equivs (2.0.5) unstable; urgency=low
+
+  * New maintainer. (Closes: #192678)
+  * Uptated to Standards-Version 3.5.10
+  * Changed some docs to be more clear (patch from eriksson 
+    <era@there.afraid.org>) (Closes: #163780, #131270)
+  * Changed Maintainer sample line in equivs-control to make it clear.
+    (Closes: #122041)
+
+ -- Fabio Rafael da Rosa <f2r@users.sourceforge.net>  Thu, 15 May 2003 16:58:59 -0300
+
 equivs (2.0.4) unstable; urgency=low
 
   * Added Preinst, Postinst, Prerm and Postrm entries to the control file
@@ -221,6 +296,4 @@ equivs (1.0) unstable; urgency=low
 
  -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Wed, 12 Mar 1997 10:46:03 +0100
 
-Local variables:
-mode: debian-changelog
-End:
+

@@ -1,4 +1,4 @@
-§packagename§ for DEBIAN
+@packagename@ for Debian
 
 
 This is a dummy package that makes Debian's package management
@@ -7,7 +7,7 @@ packages do depend on are actually installed.
 
 The special dependencies used in this package are:
 
-§depends§
+@depends@
 
 Please note that this is a crude hack and if thoughtlessly used
 might possibly do damage to your packaging system. And please

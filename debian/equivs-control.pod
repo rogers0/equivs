@@ -8,11 +8,11 @@ B<equivs-control filename>
 
 =head1 DESCRIPTION
 
-This programm copies a template control file as needed by 
-the equivs-control command as the specified filename.
+B<equivs-control> copies a template control file as needed by 
+the B<equivs-build> command to the specified filename.
 
 You then have to edit the created file to reflect your choices.
-The controlfile has the form used by regular controlfiles
+The control file has the form used by regular control files
 in source packages. You can delete the unneeded fields
 in the generated file.
 
@@ -36,5 +36,4 @@ Martin Bialasinski <martinb@debian.org>
 
 =head1 SEE ALSO
 
-equivs-build(1)
-
+L<equivs-build(1)>

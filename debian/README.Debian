@@ -1,18 +1,18 @@
 equivs for DEBIAN
 -----------------
 
-This is a package, that creates Debian packages that can be 
-used to inform dpkg about localy installed packages and their 
-dependencies. Also empty packages that just require other packages
+This is a package that creates Debian packages which can be 
+used to inform dpkg about locally installed packages and their 
+dependencies. Also empty packages which just require other packages
 can be created with equivs. These can be used as "profile" packages 
-that just mark otherones for installation.
+which just mark other ones for installation.
 
-Please note that this is a crude hack and if thoughtlessly used
-might possibly do damage to your packaging system. And please
+Please note that this is a crude hack and if thoughtlessly used,
+it might possibly do damage to your packaging system. And please
 note as well that using it is not the recommended way of dealing
 with broken dependencies. Better file a bug report instead.
 
-In contrast to prior versions of equivs, it does not recreate the 
+In contrast to prior versions of equivs, this version does not recreate the 
 equivs package, but creates new dummy packages.
 
 History of the package:  (by Paul Seelig)
@@ -46,44 +46,16 @@ of control files in /usr/share/doc/equivs/examples.
 
 The control file has a structure like the control files in "real"
 Debian packages, but it doesn't have to define all keys, as default 
-ones will be used, if you omit one.
+values will be used if you omit one. See the manual page for
+"equivs-build" for more information.
 
-There are four additional fields that can be used:
+Check the Debian Policy Manual, Chapter 2, if you are unsure 
+about the different level of package relationships (dependencies)
+http://www.debian.org/doc/debian-policy/ch-archive.html
+(also available in the debian-policy package).
 
-- Changelog: file to be used as the changelog
-
-- Version: if you don't use a local changelog, equivs will create a 
-           dummy one. As the version of the package is defined in the
-           changelog, equivs will asume the version 1.0. With this
-           field, you can set an explicit version.
-
-- Readme: a file to be used as the README.Debian file. You can use the
-          strings §packagename§ and §depends§ to insert the package
-          name and the dependency information used.
-
-- Copyright: the copyright file to by used. If ommited, the GPL 2 
-             will be used.
-
-- Extra-Files: A comma-seperated list of files to copy to the
-               /usr/share/doc/packagename directory.
-
-
-Check the Debian Packaging Manual Chapter 8, if you are unsure 
-about the different level of package relationsships (dependencies)
-http://www.debian.org/doc/packaging-manuals/packaging.html/ch-relationships.html, 
-also available in the packaging-manual package.
-
-You can create full packages, suitable for a upload 
-to the Debian servers. To do this, use the option 
---full or -f, and equivs-build will use debuild to create the package.
-
-The ID used to signed is taken from, in that order, the User from 
-the last entry of a supplied changelog, the Maintainer: field in the 
-equivs control file, the local username.
-
- 
-The program "equivs-control" will create a dummy control file
-you have to alter to be useful. 
+The program "equivs-control" will create a dummy control file,
+which you have to alter before it will be useful. 
 
 So to use equivs, you do:
 

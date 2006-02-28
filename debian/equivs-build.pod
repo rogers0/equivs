@@ -1,6 +1,6 @@
 =head1 NAME
 
-equivs-build - make a debian package to register local software
+equivs-build - make a Debian package to register local software
 
 =head1 SYNOPSIS
 
@@ -8,22 +8,22 @@ B<equivs-build [--full|-f] [--arch=foo|-a=foo] controlfile>
 
 =head1 DESCRIPTION
 
-This is a package, that creates Debian packages that can be 
-used to inform dpkg about localy installed packages and their 
-dependancies. Also empty packages that just require other packages
+B<equivs-build> is a program that creates Debian packages which can be 
+used to inform dpkg about locally installed packages and their 
+dependencies. Also empty packages that just require other packages
 can be created with equivs. These can be used as "profile" packages 
-that just mark otherones for installation.
+which just mark other ones for installation.
 
-Please note that this is a crude hack and if thoughtlessly used
-might possibly do damage to your packaging system. And please
+Please note that this is a crude hack and if thoughtlessly used,
+it might possibly do damage to your packaging system. And please
 note as well that using it is not the recommended way of dealing
 with broken dependencies. Better file a bug report instead.
 
 The control file has a structure like the control files in "real"
 Debian packages, but it doesn't have to define all keys, as default 
-ones will be used, if you omit one.
+values will be used if you omit one.
 
-There are four additional fields that can be used:
+There are several additional fields that can be used:
 
 =over 4
 
@@ -35,18 +35,18 @@ File to be used as the changelog
 
 If you don't use a local changelog, equivs will create a
 dummy one. As the version of the package is defined in the
-changelog, equivs will asume the version 1.0. With this
+changelog, equivs will assume the version 1.0. With this
 field, you can set an explicit version.
 
 =item Readme: 
 
-A file to be used as the README.Debian file. You can use the
-strings §packagename§ and §depends§ to insert the package
+A file to be used as the F<README.Debian> file. You can use the
+strings B<@packagename@> and B<@depends@> to insert the package
 name and the dependency information used.
 
 =item Copyright: 
 
-The copyright file to by used. If ommited, the GPL 2 
+The copyright file to by used. If omitted, the GPL 2 
 will be used.
 
 =item Preinst: Postinst: Prerm: Postrm:
@@ -57,12 +57,12 @@ description (package developers-reference).
 
 =item Extra-Files:
 
-A comma-seperated list of files to copy to the 
-/usr/share/doc/packagename directory.
+A comma-separated list of files to copy to the 
+F</usr/share/doc/packagename> directory.
 
 =back
 
-See /usr/share/doc/equivs/README.Debian for more information.
+See F</usr/share/doc/equivs/README.Debian> for more information.
 
 =head1 OPTIONS
 
@@ -70,19 +70,19 @@ See /usr/share/doc/equivs/README.Debian for more information.
 
 =item --full | -f
 
-Do a complete build. debuild will be called, that is a 
-full package will be build and signed, suitable for a upload 
+Do a complete build. B<debuild> will be called, that is, a 
+full package will be built and signed, suitable for upload 
 to the Debian servers. 
 
 The ID used to signed is taken from, in that order, the user from 
 the last entry of a supplied changelog, the Maintainer: field in the 
-equivs control file, the local username.
+equivs control file, or the local username.
 
 =item --arch | -a
 
-Build package for architecture the specified architecture. Used
-e.g. for building packages for hurd under linux. equivs-build uses
-dpkg-architecture to provide this facility.
+Build package for the specified architecture. Used
+e.g. for building packages for hurd under linux. B<equivs-build> uses
+B<dpkg-architecture> to provide this facility.
 
 =back
 

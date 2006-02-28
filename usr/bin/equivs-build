@@ -1,9 +1,10 @@
 #!/usr/bin/perl -w
 
-# Copyright 1999 Martin Bialasinski
-# This programm is subject to the GNU Public License Version 2
+# Copyright 1999 by Martin Bialasinski
+# Copyright 2006 by Peter Samuelson
+# This programm is subject to the GNU General Public License Version 2
 
-# doc-base Copyright (C) 1997,1998 Christian Schwarz, 
+# doc-base Copyright (C) 1997,1998 Christian Schwarz,
 # Also licensed under the GPL2
 
 use strict;
@@ -11,189 +12,135 @@ use Cwd;
 use Getopt::Long;
 use File::Copy;
 use File::Basename;
+use File::Temp ('tempdir');
 
-sub usage{
-  print <<EOU;
+my $builddir = tempdir('equivs.XXXXXX', DIR => cwd, CLEANUP => 1) or
+  die "Cannot create temporary build dir: $!\n";
+my %control;
+
+sub usage {
+  print STDERR <<EOU;
 Usage: equivs-build [--full|-f] [--arch=foo|-a=foo] controlfile
 controlfile is the name of an equivs controlfile.
 You can use "equivs-control filename" to create one.
 
---full : full build incl. signing etc. suitable for 
-         upload to Debian
---arch : Build package for architecture foo. Used e.g. for building 
-         packages for hurd under linux.
+--full   Full build including signing, etc., suitable for upload to Debian
+--arch   Build package for a different architecture.
+         Used e.g. for building Hurd packages under Linux.
 EOU
   exit 1;
 }
 
-my $full_package;
-my $arch;                       
-my $result = GetOptions("full" => \$full_package,
-			"arch=s" => \$arch);          
-usage() if (!$result);
+my ($full_package, $arch);
+GetOptions(full => \$full_package, 'arch=s' => \$arch) or usage();
 
-my $debug=0;
-
-my $builddir= cwd . "/equivs";  # directory to put the files in needed for 
-                               # creating the debian package
-
-my $cwd = cwd;             # save the current working directory. The created
-                           # package will be put there
+my $debug = 0;
 
 umask(022);
 
-# We need a control file
-
 my $controlfile = $ARGV[0];
-
-my %control;    # holds the control elements
-#my ($username, $fullname, $systemname);
-
 if (! $controlfile) {
-  print "No control file was specified";
+  print STDERR "No control file was specified\n";
   usage();
 }
 
-if (! -f $controlfile) {
-  die "The control file [$controlfile] could not be opened";
-}
-
-
-# Create the build directory
-
-system ("[ ! -L $builddir ] && rm -rf $builddir"); # empty the builddir    
-mkdir $builddir, 0755 or die "Can not create build directory $builddir: $!";
-
-# Copy the default files
-
-my $ret = system("cp -R /usr/share/equivs/template/* $builddir");
-
-if ( 0xffff & $ret != 0 ) {
-  die "Error on copy of the template files: $!";
-}
+system("cp -R /usr/share/equivs/template/* $builddir") == 0 or
+  die "Error on copy of the template files: exit status " . ($?>>8) . "\n";
 
 # Parse the equivs control file
 
-&read_control_file($controlfile);
+read_control_file($builddir, \%control, $arch, $controlfile);
 
-     # Debug
-     if ($debug) { 
-       my ($k, $v);
-       while (($k, $v) = each %control ) {
-	 print "$k -> $v \n";
-       }
-     }
+if ($debug) {
+  my ($k, $v);
+  while (($k, $v) = each %control ) {
+    print "$k -> $v\n";
+  }
+}
 
 # Copy any additional files
 
-my @extra_files = split ",", $control{"Extra-Files"} || "";
+my @extra_files = split ",", $control{'Extra-Files'} || "";
 
 mkdir "$builddir/docs", 0755;
-open DOCS, "> $builddir/debian/docs" or 
-  die "Can't open $builddir/debian/docs for writing: $!";
+open DOCS, '>', "$builddir/debian/docs" or
+  die "Cannot open $builddir/debian/docs for writing: $!\n";
 
 foreach my $file (@extra_files){
   $file =~ s/ +//g;
   my $destination = basename($file);
   copy $file, "$builddir/docs/$destination" or
-    die "Error on copying $file to $builddir/docs/$destination : $!";
+    die "Cannot copy $file to $builddir/docs/$destination: $!\n";
   print DOCS "docs/$destination\n";
 }
 close DOCS;
 
-foreach my $script (("Preinst","Postinst","Prerm","Postrm")) {
+foreach my $script (qw(Preinst Postinst Prerm Postrm)) {
     next unless defined $control{$script};
     my $destination = lc($script);
     copy $control{$script}, "$builddir/debian/$destination" or
-	die "Cannot copy $script to $builddir/debian/$destination\n";
+      die "Cannot copy $script to $builddir/debian/$destination: $!\n";
 }
 
 
-# Write the control file
+write_control_file($builddir, \%control);
 
-&write_control_file;
-
-# Create the changelog
-
-if ($control{"Changelog"}){ 
-  if(-f $control{"Changelog"}){
-    # Changelog specified, copy it
-    copy $control{'Changelog'}, "$builddir/debian/changelog" or
-      die "Error on copy of your changelog file: $!";
-    
-  } else {
-    die "Can't open the changelog [$control{'Changelog'}] you specified";
-  }
+if ($control{'Changelog'}) {
+  copy $control{'Changelog'}, "$builddir/debian/changelog" or
+    die "Cannot copy changelog file $control{'Changelog'}: $!\n";
 } else {
-  # Create a standard changelog file
-  &make_changelog;
+  make_changelog($builddir, \%control);
 }
 
-# Create the README.Debian file
 
-if ($control{"Readme"}){
-  if (-f $control{"Readme"}){
-    # Readme specified, copy it
-    copy $control{'Readme'}, "$builddir/debian/README.Debian.in" or
-      die "Error on copy of your readme file: $!";
-  } else {
-    die "Can't open the readme file [$control{'Readme'}] you specified";
-  }
+if ($control{'Readme'}) {
+  copy $control{'Readme'}, "$builddir/debian/README.Debian.in" or
+    die "Cannot copy README file $control{'Readme'}: $!\n";
 }
- 
+
 # Make substitutions in the Readme
-
-&make_readme;
+make_readme($builddir, \%control);
 
 # Copy a copyright file, otherwise use GPL2
-
-if ($control{"Copyright"}) {
-  if (-f $control{"Copyright"}){
-    # Copyright specified, copy it
-    copy $control{'Copyright'}, "$builddir/debian/copyright" or
-      die "Error on copy of your copyright file: $!";
-  } else {
-    die "Can't open the copyright file [$control{'Copyright'}] you specified";
-  }
+if ($control{'Copyright'}) {
+  copy $control{'Copyright'}, "$builddir/debian/copyright" or
+    die "Cannot copy copyright file $control{'Copyright'}: $!\n";
 }
-
-# Cleanup a bit
-
-unlink "$builddir/debian/README.Debian.in";
-unlink "$builddir/debian/control.in";
-
-# Set architecture for crosscompiling, if requested
-
-my $arch_cmd = $arch ? "dpkg-architecture -a$arch -c " : "";
-
-# Create the package
 
 chdir $builddir;
+unlink glob "debian/*.in";
 
-if ($full_package){
-  $ret = system("$arch_cmd debuild -rfakeroot");
-} else {
-  $ret = system("$arch_cmd fakeroot debian/rules binary");
+my @build_cmd = ();
+# Set architecture for crosscompiling, if requested
+if ($arch) {
+  @build_cmd = ("dpkg-architecture", "-a$arch", "-c");
 }
 
-if ( 0xffff & $ret != 0 ) {
-  die "Error during the build process: $!";
+if ($full_package) {
+  push @build_cmd, 'debuild', '-rfakeroot';
 } else {
-  print "\nThe package has been created.\n";
-  print "Attention, the package has been created in the ";
-  print "current directory,\nnot in \"..\" as indicated by the message above!\n";
+  push @build_cmd, 'fakeroot', 'debian/rules', 'binary';
 }
+system(@build_cmd) == 0 or
+  die "Error in the build process: exit status " . ($?>>8) . "\n";
 
+chdir '..';
+print "\nThe package has been created.\n";
+print "Attention, the package has been created in the current directory,\n";
+print "not in \"..\" as indicated by the message above!\n";
+exit 0;
 
 sub read_control_file {
-  my($file) = shift;
+  my ($builddir, $control, $specific_arch, $file) = @_;
+  my $in;
 
-  open(IN, "$builddir/debian/control.in") or 
-        die "$builddir/debian/control.in: cannot open control file for reading: $!";
+  open($in, "$builddir/debian/control.in") or
+    die "Cannot open control file: $!\n";
+  read_control_file_section($in, $control) or
+    die "error: empty control file\n";
+  close $in;
 
-  read_control_file_section(\%control) or die "error: empty control file";
-
-# Fix the Maintainer field
+  # Set some field defaults: Maintainer, Architecture
   my (@user) =  getpwuid $>;
   my $gecos;
   my ($username, $systemname, $fullname);
@@ -201,179 +148,143 @@ sub read_control_file {
   ($username, $gecos) = @user[0,6];
   $fullname = (split ",", $gecos)[0];
 
-  $systemname = `hostname --fqdn`;
-  chomp($systemname);
+  chomp($systemname = qx(hostname --fqdn));
 
-  $control{"Maintainer"} = "$fullname <$username\@$systemname>";
+  $control->{'Maintainer'} = "$fullname <$username\@$systemname>";
 
-  open(IN, $file) or 
-        die "$file: cannot open control file for reading: $!";
+  $control->{'Architecture'} = $specific_arch ? 'any' : 'all';
 
-  read_control_file_section(\%control) or die "error: empty control file";
+  open($in, $file) or
+    die "Cannot open control file $file: $!\n";
+
+  read_control_file_section($in, $control) or
+    die "error: empty control file\n";
+  close $in;
 
   # Fix Source: entry
-
-  $control{"Source"} = $control{"Package"};
+  $control->{'Source'} = $control->{'Package'};
 
   # remove trailing whitespace
-  
-#  foreach my $key (keys %control) {
-#    $control{$key} =~ s/\s$//;
+#  foreach my $key (keys %$control) {
+#    $control->{$key} =~ s/\s$//;
 #  }
 
 }
 
 sub read_control_file_section {
-  my ($pfields) = @_;
+  my ($fh, $pfields) = @_;
 
-  my $empty = 1;
   my ($cf,$v);
-  while (<IN>) {
+  while (<$fh>) {
     chomp;
-
-    # empty line?
-    if (/^\s*$/o) {
-        next;
-    }
+    next if (m/^\s*$/ or m/^\s*#/);
 
     # new field?
     if (/^(\S+)\s*:\s*(.*?)\s*$/) {
-      ($cf,$v) = (ucfirst $1,$2);
-#      print STDERR "$cf -> $v\n" if ($debug);
-#      if (exists $$pfields{$cf}) {
-#        warn "warning: $cf: overwriting previous setting of control field";
-#      }
-      $$pfields{$cf} = $v;
+      ($cf,$v) = (ucfirst lc $1, $2);
+      $cf =~ s/(?<=-)([a-z])/uc $1/eg;
+      $pfields->{$cf} = $v;
     } elsif (/^(\s+\S.*)$/) {
       $v = $1;
-      defined($cf) or die "syntax error in control file: no field specified";
-#      print STDERR "$cf -> $v (continued)\n" if ($debug);
-      $$pfields{$cf} .= "\n$v";
+      defined($cf) or die "syntax error in control file: no field specified\n";
+      $pfields->{$cf} .= "\n$v";
     } else {
-      die "syntax error in control file: $_";
+      die "syntax error in control file: $_\n";
     }
   }
 
   return 1;
 }
 
-# Write control fields
 
+# Write control fields
 sub control_fields {
   my $retval;
-  my @fields = @_;
+  my ($control, @fields) = @_;
 
   foreach my $str (@fields) {
-    my $t = $control{$str};
+    my $t = $control->{$str};
     if ($t) {
       $retval .= "$str: $t\n";
     }
-  }  
+  }
 
   return $retval;
 }
 
-# Write control file
 
 sub write_control_file {
-  open OUT, ">$builddir/debian/control";
-  my ($k, $v);
+  my ($builddir, $control) = @_;
+  open OUT, '>', "$builddir/debian/control" or
+    die "Cannot open $builddir/debian/control for writing: $!\n";
 
-  my $deps;
-#  foreach my $str (("Source",
-#		    "Section",
-#		    "Priority",
-#		    "Maintainer",
-#		    "Standards-Version")) {
-#    my $t = $control{$str};
-#    if ($t) {
-#      $deps .= "$str: $t\n";
-#    }
-#  }
-  $deps = control_fields(("Source",
-			  "Section",
-			  "Priority",
-			  "Maintainer",
-			  "Standards-Version"));
-  $deps .= "\n";
-#  my $str;
-#  foreach $str (("Package",
-#		    "Architecture",
-	#	    "Pre-Depends",
-        #            "Depends",
-	#	    "Recommends",
-		#    "Suggests",
-#		    "Conflicts",
- #                   "Provides",
-	#	    "Description")) {
- #   my $t = $control{$str};
-  #  if ($t) {
-  #    $deps .= "$str: $t\n";
-  #  }
-  $deps .= control_fields(("Package",
-			  "Architecture",
-			  "Pre-Depends",
-			  "Depends",
-			  "Recommends",
-			  "Suggests",
-			  "Conflicts",
-			  "Provides",
-			  "Description"));
-  print OUT $deps;
+  print OUT control_fields($control,
+			   "Source",
+			   "Section",
+			   "Priority",
+			   "Maintainer",
+			   "Build-Depends",
+			   "Standards-Version");
+  print OUT "\n";
+  print OUT control_fields($control,
+			   "Package",
+			   "Architecture",
+			   "Pre-Depends",
+			   "Depends",
+			   "Recommends",
+			   "Suggests",
+			   "Conflicts",
+			   "Provides",
+			   "Replaces",
+			   "Description");
+  close OUT;
 }
 
 
-# Create the changelog file
-
 sub make_changelog {
-  open OUT, ">$builddir/debian/changelog" || die "Couldn't write changelog: $!";
-  my($date) = `822-date`; chop $date;
-  my $version = $control{"Version"} || "1.0";
-  
+  my ($builddir, $control) = @_;
+  my ($version, $date);
+
+  $version = $control->{'Version'} || "1.0";
+  chomp ($date = qx(822-date));
+
+  open OUT, '>', "$builddir/debian/changelog" or
+    die "Couldn't write changelog: $!\n";
   print OUT <<EOINPUT;
-$control{Package} ($version) unstable; urgency=low
+$control->{Package} ($version) unstable; urgency=low
 
   * First version
 
- -- $control{"Maintainer"}  $date
+ -- $control->{'Maintainer'}  $date
 EOINPUT
-
+  close OUT;
 }
-
-# Read the control file. Adopted from install-doc (doc-base package)
 
 
 # Create the README.Debian file
-
 sub make_readme {
-  undef $/;
-  open IN, "$builddir/debian/README.Debian.in" or die "Can't open the readme file: $!";
-  my ($content) = <IN>;
-  $/="\n";
-  $content =~ s/§packagename§/$control{"Package"}/g;
-  my $deps;
-  my $str;
+  my ($builddir, $control) = @_;
+  my ($content, $deps);
 
-  $deps = control_fields(("Pre-Depends",
-			  "Depends",
-			  "Recommends",
-			  "Suggests",
-			  "Conflicts",
-			  "Provides"));
-#  foreach $str (("Pre-Depends",
-#                    "Depends",
-#		    "Recommends",
-#		    "Suggests",
-#		    "Conflicts",
-#		    "Provides")) {
-#    my $t = $control{$str};
-#    if ($t) {
-#      $deps .= "$str: $t\n";
-#    }
-#  }
-  $content =~ s/§depends§/$deps || " "/eg;
-  open OUT, ">$builddir/debian/README.Debian";
+  open IN, "$builddir/debian/README.Debian.in" or
+    die "Cannot open the README file: $!\n";
+  $content = join '', <IN>;
+  close IN;
+
+  $content =~ s/\@packagename\@/$control->{'Package'}/g;
+
+  $deps = control_fields($control,
+			 "Pre-Depends",
+			 "Depends",
+			 "Recommends",
+			 "Suggests",
+			 "Conflicts",
+			 "Provides",
+			 "Replaces");
+  $deps ||= " ";
+  $content =~ s/\@depends\@/$deps/g;
+  open OUT, '>', "$builddir/debian/README.Debian" or
+    die "Cannot open $builddir/debian/README.Debian for writing: $!\n";
   print OUT $content;
-  close OUT or die "$!";
+  close OUT;
 }
- 

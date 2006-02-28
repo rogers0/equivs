@@ -1,22 +1,20 @@
 Source: equivs-dummy
 Section: misc
 Priority: optional
-Maintainer: Martin Bialasinski <martinb@debian.org>
-Standards-Version: 3.0.1
+Build-Depends: debhelper (>= 4)
+Maintainer: root <root@localhost>
+Standards-Version: 3.6.2
 
 Package: equivs-dummy
 Architecture: all
-Description: Dummy package to fulfil package dependencies
+Description: Dummy package to fulfill package dependencies
  This is a dummy package that makes Debian's package management
  system believe that equivalents to packages on which other
- packages do depend on are actually installed.
- .
- Deinstallation of this package is only possible when all pending
- dependency issues are properly resolved in some other way. A more
- brutal approach for it's deinstallation is to create and install
- this package configured using an empty control file.
+ packages depend on are actually installed.  Deinstallation of
+ this package is only possible when all pending dependency issues
+ are properly resolved in some other way.
  .
  Please note that this is a crude hack and if thoughtlessly used
- might possibly do damage to your packaging system. And please
+ might possibly do damage to your packaging system.  And please
  note as well that using it is not the recommended way of dealing
- with broken dependencies. Better file a bug report instead.
+ with broken dependencies.  It is better to file a bug report.
