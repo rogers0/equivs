@@ -2,6 +2,7 @@
 ### Uncomment to edit them.
 Section: misc
 Priority: optional
+# Homepage: <enter URL here; no default>
 Standards-Version: 3.6.2
 
 Package: <package name; defaults to equivs-dummy>
@@ -18,6 +19,8 @@ Package: <package name; defaults to equivs-dummy>
 # Changelog: <changelog file; defaults to a generic changelog>
 # Readme: <README.Debian file; defaults to a generic one>
 # Extra-Files: <comma-separated list of additional files for the doc directory>
+# Files: <pair of space-separated paths; First is file to include, second is destination>
+#  <more pairs, if there's more than one file to include. Notice the starting space>
 Description: <short description; defaults to some wise words> 
  long description and info
  .

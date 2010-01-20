@@ -60,6 +60,29 @@ description (package developers-reference).
 A comma-separated list of files to copy to the 
 F</usr/share/doc/packagename> directory.
 
+=item Files:
+
+Files to be copied into some directory of the created package.  Each
+line contains a source filename and a destination directory,
+space-separated.  As with other multi-line headers, all lines but the
+first must be indented.  Example:
+
+  Files: foo-cron /etc/cron.d/
+   foo-cron-helper /usr/local/bin/
+
+=item File:
+
+Files to be copied into some directory of the created package,
+specified inline in the source control file. The field syntax is the
+name of the files to be created, followed by lines indented by 1
+space denoting file content; leading space will be trimmed.  An octal
+file mode may be specified after the filename; it defaults to 644, and
+will be normalised to 644 or 755.  Example:
+
+  File: /usr/local/bin/true 755
+   #!/bin/sh
+   exit 0
+
 =back
 
 See F</usr/share/doc/equivs/README.Debian> for more information.

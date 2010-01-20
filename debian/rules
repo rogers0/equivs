@@ -7,7 +7,7 @@ PKG := equivs
 MANPAGES := debian/equivs-control.1 debian/equivs-build.1
 
 %.1: %.pod
-	pod2man --section=1 --release="$(date +'%d %b %Y')" \
+	pod2man --section=1 --release="$$(date +'%d %b %Y')" \
 	--center="Debian/GNU" --date=' ' $< > $@
 
 build: $(MANPAGES)
