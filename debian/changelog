@@ -1,3 +1,17 @@
+equivs (2.0.9) unstable; urgency=low
+
+  * Upgrade to Policy 3.9.2 - no changes.
+  * Upgrade to source format 1.0 - no changes.
+  * Support Breaks.  (Closes: #571638)
+  * Move up to debhelper 7.  (Closes: #624175)
+  * Fix 'Files:' option to expect an install _directory_.  (Closes: #636310)
+  * Let 'Source:' field default to package name but be overridable.
+    Based on patch from era erickson.  (Closes: #409557)
+  * Improve option handling: allow equivs-build --arch and --full to work
+    together.  Previously, with --full, --arch had no effect.
+
+ -- Peter Samuelson <peter@p12n.org>  Fri, 30 Sep 2011 01:22:27 -0500
+
 equivs (2.0.8) unstable; urgency=low
 
   * Acknowledge NMU, thanks Zack.

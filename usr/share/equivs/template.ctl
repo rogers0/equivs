@@ -1,9 +1,10 @@
 ### Commented entries have reasonable defaults.
 ### Uncomment to edit them.
+# Source: <source package name; defaults to package name>
 Section: misc
 Priority: optional
 # Homepage: <enter URL here; no default>
-Standards-Version: 3.6.2
+Standards-Version: 3.9.2
 
 Package: <package name; defaults to equivs-dummy>
 # Version: <enter version here; defaults to 1.0>

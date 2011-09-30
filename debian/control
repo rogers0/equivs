@@ -2,11 +2,11 @@ Source: equivs
 Section: admin
 Priority: extra
 Maintainer: Peter Samuelson <peter@p12n.org>
-Standards-Version: 3.8.3
+Standards-Version: 3.9.2
 Build-Depends: debhelper
 
 Package: equivs
-Depends: perl, debhelper, dpkg-dev, make, fakeroot
+Depends: perl, debhelper, dpkg-dev, make, fakeroot, ${misc:Depends}
 Architecture: all
 Description: Circumvent Debian package dependencies
  This package provides a tool to create trivial Debian packages.

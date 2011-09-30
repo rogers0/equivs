@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 # Copyright 1999 by Martin Bialasinski
 # Copyright 2006 by Peter Samuelson
@@ -8,8 +8,10 @@
 # Also licensed under the GPL2
 
 use strict;
+use warnings;
+
 use Cwd;
-use Getopt::Long;
+use Getopt::Long qw( :config no_ignore_case bundling );
 use File::Copy;
 use File::Basename;
 use File::Temp ('tempdir');
@@ -32,7 +34,7 @@ EOU
 }
 
 my ($full_package, $arch);
-GetOptions(full => \$full_package, 'arch=s' => \$arch) or usage();
+GetOptions('full|f' => \$full_package, 'arch|a=s' => \$arch) or usage();
 
 my $debug = 0;
 
@@ -63,7 +65,9 @@ if ($debug) {
 my @extra_files = split ",", $control{'Extra-Files'} || "";
 my %install_files = ();
 for (split "\n", $control{'Files'} || "") {
-    $install_files{$2} = $1 if m/^\s*(\S+)\s+(\S+)\s*$/;
+    die "Cannot parse Files line: '$_'\n"
+        unless m:^\s*(\S+)\s+(\S+)/?\s*$:;
+    $install_files{"$2/$1"} = $1;
 }
 my %create_files = ();
 for (@{$control{'File'} || []}) {
@@ -160,21 +164,18 @@ if ($control{'Copyright'}) {
 chdir $builddir;
 unlink glob "debian/*.in";
 
-my @build_cmd = ();
-# Set architecture for crosscompiling, if requested
-if ($arch) {
-  @build_cmd = ("dpkg-architecture", "-a$arch", "-c");
-}
-
+my @build_cmd;
 if ($full_package) {
-  push @build_cmd, qw(dpkg-buildpackage -rfakeroot);
+    @build_cmd = (qw(dpkg-buildpackage -rfakeroot), ($arch ? "-a$arch" : ()));
 } else {
-  push @build_cmd, qw(fakeroot debian/rules binary);
+    @build_cmd = (($arch ? ("dpkg-architecture", "-a$arch", "-c") : ()),
+                  qw(fakeroot debian/rules binary));
 }
-system(@build_cmd) == 0 or
-  die "Error in the build process: exit status " . ($?>>8) . "\n";
-
+system @build_cmd;
+my $err = $? >> 8;
 chdir '..';
+die "Error in the build process: exit status $err\n" if $err;
+
 print "\nThe package has been created.\n";
 print "Attention, the package has been created in the current directory,\n";
 print "not in \"..\" as indicated by the message above!\n";
@@ -231,8 +232,8 @@ sub read_control_file {
     }
   }
 
-  # Fix Source: entry
-  $control->{'Source'} = $control->{'Package'};
+  # If no Source entry was specified, copy Package:
+  $control->{'Source'} ||= $control->{'Package'};
 
   # remove trailing whitespace
 #  foreach my $key (keys %$control) {
@@ -305,6 +306,7 @@ sub write_control_file {
 			   "Recommends",
 			   "Suggests",
 			   "Conflicts",
+			   "Breaks",
 			   "Provides",
 			   "Replaces",
 			   "Description");
@@ -323,7 +325,7 @@ sub make_changelog {
   open OUT, '>', "$builddir/debian/changelog" or
     die "Couldn't write changelog: $!\n";
   print OUT <<EOINPUT;
-$control->{Package} ($version) $suite; urgency=low
+$control->{Source} ($version) $suite; urgency=low
 
   * First version
 
@@ -351,6 +353,7 @@ sub make_readme {
 			 "Recommends",
 			 "Suggests",
 			 "Conflicts",
+                         "Breaks",
 			 "Provides",
 			 "Replaces");
   $deps ||= " ";

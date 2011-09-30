@@ -1,9 +1,8 @@
-Source: equivs-dummy
 Section: misc
 Priority: optional
-Build-Depends: debhelper (>= 4)
+Build-Depends: debhelper (>= 7)
 Maintainer: root <root@localhost>
-Standards-Version: 3.6.2
+Standards-Version: 3.9.2
 
 Package: equivs-dummy
 Architecture: all

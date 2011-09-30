@@ -3,21 +3,20 @@
 
 #export DH_VERBOSE=1
 
-build:
+build build-arch build-indep:
 
 clean:
 	dh_testdir
-	dh_testroot
 	dh_clean
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
-
-binary-indep: install
+	dh_prep
 
 binary-arch: install
+
+binary-indep: install
 	dh_testdir
 	dh_testroot
 	dh_install
