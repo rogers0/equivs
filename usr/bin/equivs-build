@@ -67,7 +67,7 @@ my %install_files = ();
 for (split "\n", $control{'Files'} || "") {
     die "Cannot parse Files line: '$_'\n"
         unless m:^\s*(\S+)\s+(\S+)/?\s*$:;
-    $install_files{"$2/$1"} = $1;
+    $install_files{"$2/".basename($1)} = $1;
 }
 my %create_files = ();
 for (@{$control{'File'} || []}) {
