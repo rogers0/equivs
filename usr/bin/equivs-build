@@ -46,7 +46,7 @@ if (! $controlfile) {
   usage();
 }
 
-system("cp -R /usr/share/equivs/template/* $builddir") == 0 or
+system("cp -R /usr/share/equivs/template/* \"$builddir\"") == 0 or
   die "Error on copy of the template files: exit status " . ($?>>8) . "\n";
 
 # Parse the equivs control file
