@@ -41,7 +41,7 @@ When you call the "equivs-build" program, it will create a
 subdirectory "equivs", containing the files necessary to create
 a Debian package and build that package.
 
-You need a control file for make-equivs. You will find examples
+You need a control file for equivs-build. You will find examples
 of control files in /usr/share/doc/equivs/examples.
 
 The control file has a structure like the control files in "real"
@@ -49,9 +49,9 @@ Debian packages, but it doesn't have to define all keys, as default
 values will be used if you omit one. See the manual page for
 "equivs-build" for more information.
 
-Check the Debian Policy Manual, Chapter 2, if you are unsure 
+Check the Debian Policy Manual, Chapter 7, if you are unsure
 about the different level of package relationships (dependencies)
-http://www.debian.org/doc/debian-policy/ch-archive.html
+http://www.debian.org/doc/debian-policy/ch-relationships.html
 (also available in the debian-policy package).
 
 The program "equivs-control" will create a dummy control file,
