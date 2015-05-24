@@ -5,9 +5,10 @@
 #export DH_VERBOSE=1
 PKG := equivs
 MANPAGES := debian/equivs-control.1 debian/equivs-build.1
+BUILD_DATE = $(shell dpkg-parsechangelog -S Date)
 
 %.1: %.pod
-	pod2man --section=1 --release="$$(date +'%d %b %Y')" \
+	pod2man --section=1 --release="$$(LC_ALL=C date -u +'%d %b %Y' -d '$(BUILD_DATE)')" \
 	--center="Debian/GNU" --date=' ' $< > $@
 
 build-arch:
