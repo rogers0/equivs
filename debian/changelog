@@ -1,3 +1,10 @@
+equivs (2.0.9+nmu1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add Multi-Arch support. (Closes: #692934 693548 697820)
+
+ -- Wookey <wookey@debian.org>  Mon, 19 Oct 2015 01:38:56 +0000
+
 equivs (2.0.9) unstable; urgency=low
 
   * Upgrade to Policy 3.9.2 - no changes.

@@ -6,6 +6,7 @@ Standards-Version: 3.9.2
 
 Package: equivs-dummy
 Architecture: all
+Multi-Arch: foreign
 Description: Dummy package to fulfill package dependencies
  This is a dummy package that makes Debian's package management
  system believe that equivalents to packages on which other

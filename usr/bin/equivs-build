@@ -309,6 +309,7 @@ sub write_control_file {
 			   "Breaks",
 			   "Provides",
 			   "Replaces",
+			   "Multi-Arch",
 			   "Description");
   close OUT;
 }

@@ -55,6 +55,13 @@ Maintainerscripts executed before/after installation/removal
 of the package. See the Debian developers reference for a 
 description (package developers-reference).
 
+=item Multi-Arch:
+
+Field specifying multiarch dependency status. Used exactly as in 'real' packages.
+Foreign: Satisfies dependencies for all architectures
+Same: Satisfies dependencies only for the same architecture
+Allowed: Can act as either Foreign or Same, as specified in the dependency
+
 =item Extra-Files:
 
 A comma-separated list of files to copy to the 
