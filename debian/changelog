@@ -9,6 +9,9 @@ equivs (2.0.10) UNRELEASED; urgency=medium
     (Closes: #679101) (LP: #881153, #1016402)
   * debian/README.Debian:
     - Fix typos. Thanks to Regid Ichira <regid23@nt1.in> (Closes: #724608)
+  * debian/rules:
+    - Thanks to Reiner Herrmann <reiner@reiner-h.de>, this package should be
+      reproducible now. (Closes: #786714)
 
  -- Roger Shimizu <rogershimizu@gmail.com>  Mon, 10 Apr 2017 20:13:58 +0900
 
