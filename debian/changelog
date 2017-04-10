@@ -7,6 +7,8 @@ equivs (2.0.10) UNRELEASED; urgency=medium
   * Fix that equivs-build doesn't work if & is part of PWD.
     Thanks to Martin Mrazik and era eriksson <era@iki.fi>.
     (Closes: #679101) (LP: #881153, #1016402)
+  * debian/README.Debian:
+    - Fix typos. Thanks to Regid Ichira <regid23@nt1.in> (Closes: #724608)
 
  -- Roger Shimizu <rogershimizu@gmail.com>  Mon, 10 Apr 2017 20:13:58 +0900
 
