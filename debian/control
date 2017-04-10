@@ -3,7 +3,7 @@ Section: admin
 Priority: extra
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Standards-Version: 3.9.2
-Build-Depends: debhelper
+Build-Depends: debhelper (>= 9)
 
 Package: equivs
 Depends: perl, debhelper, dpkg-dev, make, fakeroot, ${misc:Depends}
