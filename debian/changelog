@@ -1,6 +1,9 @@
 equivs (2.0.10) UNRELEASED; urgency=medium
 
   * QA upload.
+  * Strip subdirectories before installing file listed in "Files:".
+    Thanks to RjY <rjy@users.sourceforge.net> and
+    Euan Thoms <euan@potensol.com>. (Closes: #662946)
 
  -- Roger Shimizu <rogershimizu@gmail.com>  Mon, 10 Apr 2017 20:13:58 +0900
 
