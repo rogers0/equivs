@@ -16,6 +16,10 @@ equivs (2.0.10) UNRELEASED; urgency=medium
     - Make DEP5 copyright
   * debian/{control,compat}
     - Bump debhelper to version 9.
+  * Bump versions in template:
+    - standard version to 3.9.8
+    - debhelper version to 9
+    - source version to 3.0 (quilt)
 
  -- Roger Shimizu <rogershimizu@gmail.com>  Mon, 10 Apr 2017 20:13:58 +0900
 
