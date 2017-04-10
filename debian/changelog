@@ -1,0 +1,85 @@
+equivs (1.0.5-3) unstable; urgency=low
+
+  * Upgraded to standards version 2.4.0.0 (no changes).
+  * Minor changes to tar routine in debian/rules to make it more reliably.
+  * Closing Bug#18921 which was already addressed in former releases.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Sun, 22 Feb 1998 07:49:23 +0100
+
+equivs (1.0.5-2) unstable; urgency=low
+
+  * Added correct FSF postal address into debian/copyright as 
+    suggested by lintian check.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Sun, 22 Feb 1998 07:49:23 +0100
+
+equivs (1.0.5-1) unstable; urgency=low
+
+  * Complete overhaul (and hopefully simplification) of "equivs".
+  * Updated README.debian with a clearer description of the package's 
+    usage and instructions on how to remove it again. I hope "equivs"
+    is pretty foolproof by now.
+  * Changed debian/rules and the preinst/postinst files to use the
+    configuration file "/etc/equivs.conf".
+  * Added debian/purge file.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Sat, 07 Feb 1998 16:34:32 +0100
+
+equivs (1.0.4-2) unstable; urgency=low
+
+  * Changed "Architecture: any" to "Architecture: all" in control file since
+    there is no compiled binary included. This closes bug #16878.
+  * Minor changes to debian/rules.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Fri, 16 Jan 1998 15:04:03 +0100
+
+equivs (1.0.4-1) unstable; urgency=low
+
+  * Made equivs install it's own source into /usr/src/
+  * Put equivs into section admin with priority optional
+  * Added warnings about possible damage of package dependencies if 
+    mindlessly used.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Thu, 04 Dec 1997 05:04:03 +0100
+
+equivs (1.0.3-2) unstable; urgency=low
+
+  * Added a small description of the build procedure to the README.debian 
+    file upon proposal of <Martin.Bialasinski@uni-koeln.de>.
+
+  * Added credit to Markus Dickebohm <m.dickebohm@uni-koeln.de> for the 
+    information which enabled me to make up this package. ;-)
+
+  * Various changes to debian/rules so that the current configuration is
+    added to the documentation as "/usr/doc/equivs/current.conf".
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Mon, 29 Sep 1997 22:24:03 +0100
+
+equivs (1.0.3-1) unstable; urgency=low
+
+  * Changed freeware license to GPL.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Thu, 26 Mar 1997 14:40:03 +0100
+
+equivs (1.0.2-1) unstable; urgency=low
+
+  * Removed silly copy actions from 'debian/rules'.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Wed, 25 Mar 1997 13:46:03 +0100
+
+equivs (1.0.1-1) unstable; urgency=low
+
+  * Included a sed command for automatically configuring the control file. The
+    user now simply has to edit debian/equivs.conf for changing the package.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Sun, 22 Jun 1997 23:36:34 +0100
+
+equivs (1.0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>  Wed, 12 Mar 1997 10:46:03 +0100
+
+Local variables:
+mode: debian-changelog
+End:

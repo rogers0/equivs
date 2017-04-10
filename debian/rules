@@ -1,0 +1,63 @@
+#!/usr/bin/make -f
+# Sample debian.rules file - for GNU Hello (1.3).
+# Copyright 1994,1995 by Ian Jackson.
+# I hereby give you perpetual unlimited permission to copy,
+# modify and relicense this file, provided that you do not remove
+# my name from the file itself.  (I assert my moral right of
+# paternity under the Copyright, Designs and Patents Act 1988.)
+# This file may have to be extensively modified
+#
+# Modified to be a prototype for debmake by Christoph Lameter <clameter@debian.org>
+
+package=equivs
+version=1.0.5
+
+build:
+	@echo >&2 ''
+	@echo >&2 'There is nothing needed to be build! Just edit debian/equivs.conf'
+	@echo >&2 'for adding or removing entries for the packages you want to make'
+	@echo >&2 '"dpkg" believe that they are installed and just go ahead with' 
+	@echo >&2 '"debian/rules binary-arch" to build it!'
+	@echo >&2 ''
+clean:
+	$(checkdir)
+	-rm -rf debian/tmp debian/files* debian/current.conf core /tmp/tmp.tar
+	-cp debian/control.clean debian/control
+
+binary-arch:	checkroot clean
+	$(clean)
+	tar cvf /tmp/equivs-tmp.tar .
+	mkdir -p `pwd`/debian/tmp/usr/src/$(package)-$(version)
+	cd `pwd`/debian/tmp/usr/src/$(package)-$(version) && tar xvf /tmp/equivs-tmp.tar
+	rm -f /tmp/equivs-tmp.tar
+
+	if [ -f /etc/equivs.conf ]; then\
+	(sed -e s/^Provides:/"Provides: `cat /etc/equivs.conf`"/ debian/control > debian/control.new);\
+	fi
+
+	if [ -f debian/control.new ]; then\
+	mv debian/control.new debian/control;\
+	fi
+
+	debstd $(package) debian/example.conf
+	dpkg-gencontrol
+	chown -R root.root debian/tmp
+	chmod -R go=rX debian/tmp
+	dpkg --build debian/tmp ..
+
+define checkdir
+	test -f debian/rules
+endef
+
+# Below here is fairly generic really
+
+binary:		binary-arch
+
+source diff:
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+checkroot:
+	$(checkdir)
+	test root = "`whoami`"
+
+.PHONY: binary binary-arch clean checkroot
