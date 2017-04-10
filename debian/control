@@ -1,7 +1,7 @@
 Source: equivs
 Section: admin
 Priority: extra
-Maintainer: Peter Samuelson <peter@p12n.org>
+Maintainer: Debian QA Group <packages@qa.debian.org>
 Standards-Version: 3.9.2
 Build-Depends: debhelper
 
