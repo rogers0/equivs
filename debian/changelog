@@ -1,4 +1,4 @@
-equivs (2.0.10) UNRELEASED; urgency=medium
+equivs (2.0.10) unstable; urgency=medium
 
   * QA upload.
   * Strip subdirectories before installing file listed in "Files:".
@@ -25,7 +25,7 @@ equivs (2.0.10) UNRELEASED; urgency=medium
   * debian/source/format:
     - Bump to 3.0 (native).
 
- -- Roger Shimizu <rogershimizu@gmail.com>  Mon, 10 Apr 2017 20:13:58 +0900
+ -- Roger Shimizu <rogershimizu@gmail.com>  Tue, 11 Apr 2017 19:15:31 +0900
 
 equivs (2.0.9+nmu1) unstable; urgency=medium
 
