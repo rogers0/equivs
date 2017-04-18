@@ -2,25 +2,15 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
 Files: *
 Copyright:
- 1997-1998, Christian Schwarz
- 1997, Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>
- 1997, Joey Hess
- 1999, Martin Bialasinski  <agr30@uni-koeln.de>
- 2003, Fabio Rafael da Rosa <f2r@users.sourceforge.net>
- 2006, Peter Samuelson <peter@p12n.org>
-License: GPL-2+
-
-Files: debian/*
-Copyright:
- 1997-1998 Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>
- 1999-2001 Martin Bialasinski <martinb@debian.org>
+ 1997-1998 Christian Schwarz
+ 1997 Paul Seelig <pseelig@goofy.zdv.uni-mainz.de>
+ 1999-2001 Martin Bialasinski  <agr30@uni-koeln.de>
  2003 Fabio Rafael da Rosa <f2r@users.sourceforge.net>
  2004 Steve M. Robbins <smr@debian.org>
  2006,2010,2011 Peter Samuelson <peter@p12n.org>
  2008 Stefano Zacchiroli <zack@debian.org>
  2015 Wookey <wookey@debian.org>
-License: GPL-2+
-
+ 2017 Roger Shimizu <rogershimizu@gmail.com>
 License: GPL-2+
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License

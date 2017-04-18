@@ -1,6 +1,6 @@
 equivs (2.0.10) UNRELEASED; urgency=medium
 
-  * QA upload.
+  * QA upload. (See: #852223)
   * Strip subdirectories before installing file listed in "Files:".
     Thanks to RjY <rjy@users.sourceforge.net> and
     Euan Thoms <euan@potensol.com>. (Closes: #662946)
@@ -8,17 +8,18 @@ equivs (2.0.10) UNRELEASED; urgency=medium
     Thanks to Martin Mrazik and era eriksson <era@iki.fi>.
     (Closes: #679101) (LP: #881153, #1016402)
   * debian/README.Debian:
-    - Fix typos. Thanks to Regid Ichira <regid23@nt1.in> (Closes: #724608)
+    - Fix references. Thanks to Regid Ichira <regid23@nt1.in>
+      (Closes: #724608)
   * debian/rules:
     - Thanks to Reiner Herrmann <reiner@reiner-h.de>, this package should be
       reproducible now. (Closes: #786714)
   * debian/copyright:
     - Make DEP5 copyright
   * debian/{control,compat}
-    - Bump debhelper to version 9.
-  * Bump versions in template:
+    - Bump debhelper compat level to 9 (no change required).
+  * Bump versions in template (no change required):
     - standard version to 3.9.8
-    - debhelper version to 9
+    - debhelper compat level to 9
     - source version to 3.0 (quilt)
   * debian/control:
     - Bump stardard version to 3.9.8 (no change required)
